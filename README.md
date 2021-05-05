@@ -21,6 +21,62 @@ What we need to create is the following. Start by creating all of the empty fold
                       -all your original image files (just for easy access)
 
 ~~~
+
+Copy all your training images into the 'Originals' folder
+Copy the set of images that you want to train on into the JPEGImages folder
+Create image tiles if needed (See 'How big should my images be?')
+Resize them to X*600 (See 'How big should my images be?')
+
+~~~
+cd .../JPEGImages
+for file in $PWD/*.jpg
+do
+convert $file -resize 717x600 $file
+done
+~~~
+
+Optionally, rename them to consecutive numbers to make referencing them easier later on. (note: do not run this command if your images are already labelled 'n.jpg' because it will overwrite some of them
+
+~~~
+cd .../JPEGImages
+count=1
+for file in $PWD/*.jpg
+do
+mv $file $count.jpg
+count=$((count+1))
+done
+~~~
+
+Important: LabelImg grabs the folder name when writing the xml files and this needs to be VOC2012. We will fix the error that this leads to in the next step.
+
+Run LabelImg. Download a release from https://tzutalin.github.io/labelImg/ then just extract it and run sudo ./labelImg (it segfaults without sudo)
+
+* set autosave on
+* set the load and save directories (save should be .../Annotations, load is .../JPEGImages)
+* set the default classname to something easy to remember
+* press d to move to the next image
+* press w to add a box
+* Label all examples of the relevant classes in the dataset
+
+From the Annotations dir run
+~~~
+for file in $PWD/*.xml
+do sed -i 's/>JPEGImages</>VOC2012</g' $file
+done
+Cd to the JPEGImages dir and run the command
+~~~
+~~~
+ls | grep .jpg | sed "s/.jpg//g" > aeroplane_trainval.txt
+cp aeroplane_trainval.txt trainval.txt
+mv *.txt ../ImageSets/Main/
+~~~
+The Pascal VOC type dataset should now be all created. If you messed up any of the folder structure, you will need to change the XML file contents. If you rename any of the JPEG files you will need to change both the aeroplane_trainval.txt and XML file contents.
+
+Open bash in models/research and run the following command 'python object_detection/create_pascal_record.py -h' follow the help instructions to create a pascal.record and file from the dataset.
+
+~~~
+python object_detection/dataset_tools/create_pascal_tf_record.py -h
+~~~
 steps:-
 
 step-1: genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master$ cd models/research
