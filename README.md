@@ -1,6 +1,26 @@
 # FasterRCNN_Document_Segmentation
 Deep learning networks for object detection to the task of optical character recognition in order to build image features taylored for documents. In contrast to scene text reading in natural images using networks pretrained on ImageNet, our document reading is performed with small networks inspired by MNIST digit recognition challenge, at a small computational budget and a small stride. The object detection modern frameworks allow a direct end-to-end training, with no other algorithm than the deep learning and the non-max-suppression algorithm to filter the duplicate predictions. The trained weights can be used for higher level models, such as, for example, document classification, or document segmentation.
 
+
+
+What we need to create is the following. Start by creating all of the empty folders.
+~~~
++VOCdevkit
+    +VOC2012
+        +Annotations
+                -A bunch of .xml labels
+        +JPEGImages
+                -A bunch of .jpg images
+        +ImageSets
+                +Main
+                        -aeroplane_trainval.txt (This is just a list of the jpeg files without file extensions, the train.py script reads this file for all the images it is supposed to include.
+                        -trainval.txt (An exact copy of the aeroplane_trainval.txt)
+
+        +trainingConfig.config (training config file similar to https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs)
+        +Originals
+                      -all your original image files (just for easy access)
+
+~~~
 steps:-
 
 step-1: genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master$ cd models/research
