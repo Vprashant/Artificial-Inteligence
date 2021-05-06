@@ -87,7 +87,7 @@ genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master$ cd mode
 step-2: 
 Install Protoc for Ubuntu
 ~~~
-$ apt install -y protobuf-compiler
+$ sudo apt install -y protobuf-compiler
 $ protoc --version  # Ensure compiler version is 3+
 ~~~
 step-3
