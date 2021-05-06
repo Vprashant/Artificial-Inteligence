@@ -85,23 +85,36 @@ step-1:
 genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master$ cd models/research
 ~~~
 step-2: 
+Install Protoc for Ubuntu
+~~~
+$ apt install -y protobuf-compiler
+$ protoc --version  # Ensure compiler version is 3+
+~~~
+step-3
 ~~~
 genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master/models/research$ /home/data/Desktop/final_project/project_ocr/protoc_3.3/bin/protoc object_detection/protos/*.proto --python_out=.
 ~~~
-step-3: 
-~~~
-genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master/models/research$ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
-~~~
 step-4: 
+~~~
+genius@Genius:/var/www/html/Reinforcement/CNN/FasterRCNNTutorial-master/models/research$ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim 
+or use absolute path
+/models/research$ export PYTHONPATH=$PYTHONPATH:"$PYTHONPATH:/home/prashant/Desktop/models/research:/home/prashant/Desktop/models/research/slim"
+~~~
+step-5: 
 ~~~
 python object_detection/dataset_tools/create_pascal_tf_record.py -h
 ~~~
-step-5:
+step-6:
 ~~~
 python object_detection/dataset_tools/create_pascal_tf_record.py --data_dir=/home/data/Desktop/final_project/project_ocr/project_segmentation/VOCtemplate --year=VOC2012 --output_path=/home/data/Desktop/final_project/project_ocr/project_segmentation/pascal.record --label_map_path=/home/data/Desktop/final_project/project_ocr/project_segmentation/label.pbtxt --set=trainval
 ~~~
 
-step-6: 
+step-7: 
 ~~~
 python object_detection/legacy/train.py --train_dir=/home/data/Desktop/final_project/project_ocr/project_segmentation/train --pipeline_config_path=/home/data/Desktop/final_project/project_ocr/project_segmentation/faster_rcnn_resnet101_coco.config
+~~~
+step-8:
+Create graph-inference
+~~~
+python3 object_detection/export_inference_graph.py --input_type=image_tensor --pipeline_config_path=/home/prashant/Desktop/FasterRCNNTutorial/stf/faster_rcnn_resnet101_coco.config --trained_checkpoint_prefix=/home/prashant/Desktop/FasterRCNNTutorial/stf/train/model.ckpt-99 --output_directory=/home/prashant/Desktop/FasterRCNNTutorial/stf/output
 ~~~
